@@ -1,0 +1,116 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+*.pyo
+*.pyd
+
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# virtual environments (uv)
+.venv/
+venv/
+env/
+
+# uv lock artifacts (keep uv.lock, ignore temp)
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.local
+.env.*.local
+
+# keep example file
+!.env.example
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# IDEs
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Docker
+# =========================
+*.pid
+
+# =========================
+# Database (Postgres local dumps)
+# =========================
+*.dump
+*.sql
+*.sqlite
+*.db
+
+# =========================
+# ML / Model artifacts (IMPORTANT)
+# =========================
+mlruns/
+mlartifacts/
+*.pkl
+*.joblib
+models/
+
+# =========================
+# Redis / queue temp files
+# =========================
+dump.rdb
+
+# =========================
+# Jupyter (if used)
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Coverage / tests
+# =========================
+.coverage
+htmlcov/
+
+# =========================
+# uv (IMPORTANT)
+# =========================
+# DO NOT ignore uv.lock — it MUST be committed
+# uv.lock is required for reproducible builds
+
+# =========================
+# Alembic (DO NOT ignore migrations)
+# =========================
+# migrations must be tracked
+# (so intentionally NOT ignored)
+
+# =========================
+# Streamlit
+# =========================
+.streamlit/
+
+# =========================
+# Temporary runtime files
+# =========================
+tmp/
+temp/
