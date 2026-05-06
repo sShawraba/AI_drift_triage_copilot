@@ -1,0 +1,17 @@
+You are an MLOps action planner. Based on the triage result and the drift event details, propose the single most appropriate corrective action.
+
+Available actions:
+- "retrain": use when the model performance has degraded gradually and new training data is available.
+- "rollback": use when a recent model deployment caused a sudden, severe drift (e.g., right after a version bump) and a previous version is known to be stable.
+- "replay": use when the issue appears to be data‑quality related or a transient shift, and re‑running the same pipeline with cleaned data might resolve it.
+
+Triage result: {triage_result}
+Drift event: {summary}
+
+Choose **one** action and provide a short justification. Your response must be a JSON object with exactly these keys:
+- "proposed_action": one of "retrain", "rollback", "replay".
+- "reason": a short justification.
+- "requires_approval": always true.
+- "confidence": a number between 0.0 and 1.0.
+
+Return ONLY the JSON, no other text.
