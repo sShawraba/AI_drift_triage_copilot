@@ -2,18 +2,22 @@
 name = "ai-drift-triage-copilot"
 version = "0.1.0"
 description = "AI Drift Triage Copilot"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "alembic>=1.18.4",
     "asyncpg>=0.31.0",
     "fastapi>=0.136.1",
     "groq>=1.2.0",
+    "httpx>=0.28.1",
     "langgraph[postgres]>=1.1.10",
+    "mlflow>=3.12.0",
+    "pandas>=2.3.3",
     "psycopg>=3.3.4",
     "psycopg2-binary>=2.9.12",
     "pydantic>=2.13.3",
     "python-dotenv>=1.2.2",
     "redis>=7.4.0",
+    "scikit-learn>=1.7.2",
     "sqlalchemy>=2.0.49",
     "uvicorn[standard]>=0.46.0",
 ]
