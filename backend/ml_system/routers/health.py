@@ -90,3 +90,12 @@ async def system_metrics():
             "poll_interval_seconds": 30
         }
     }
+    
+@router.post("/reset-drift")
+async def reset_drift():
+    """Reset the drift severity so a fresh alert can be triggered (demo only)."""
+    from backend.ml_system.main import drift_service
+    if drift_service:
+        drift_service.last_severity = None
+        return {"message": "Drift severity reset. Next drift check will alert if severity is medium or high."}
+    return {"message": "Drift service not available"}

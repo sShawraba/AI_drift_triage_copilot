@@ -1,11 +1,13 @@
 # backend/ml_system/services/registry_service.py
+import os
 import mlflow
 from mlflow.tracking import MlflowClient
 from typing import Optional
 
 class RegistryService:
     def __init__(self):
-        mlflow.set_tracking_uri('http://localhost:5000')
+        # Use environment variable (same as model_service)
+        mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000"))
         self.client = MlflowClient()
         self.model_name = "bank_marketing_model"
     

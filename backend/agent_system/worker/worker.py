@@ -54,7 +54,8 @@ def main():
                     task_fn(
                         investigation_id=job["investigation_id"],
                         model_version=job["model_version"],
-                        **job.get("config", {}),
+                        idempotency_key=job.get("idempotency_key", ""),
+                        config=job.get("config", {}),
                     )
                     success = True
                     break

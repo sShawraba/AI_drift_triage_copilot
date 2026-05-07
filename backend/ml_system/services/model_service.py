@@ -1,4 +1,5 @@
 # backend/ml_system/services/model_service.py
+import os
 import mlflow
 import mlflow.sklearn
 import joblib
@@ -23,8 +24,8 @@ class ModelService:
         self.model_name = model_name
         self.poll_interval = poll_interval
         
-        # Set tracking URI to MLflow server
-        mlflow.set_tracking_uri('http://localhost:5000')
+        # Set tracking URI from environment (fallback to localhost)
+        mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000"))
         self.client = MlflowClient()
         
         # Current state (cached)

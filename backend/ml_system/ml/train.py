@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
-from preprocess import build_preprocessor
+from .preprocess import build_preprocessor
 from sklearn.metrics import roc_auc_score, f1_score, recall_score
 from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import classification_report

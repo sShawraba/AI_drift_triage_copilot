@@ -69,7 +69,7 @@ async def predict(request: PredictionRequest, background_tasks: BackgroundTasks)
         count = prediction_store.get_count()
         print(f"📊 Prediction count: {count}")  
 
-        if count % 20 == 0 and drift_service is not None:
+        if count % 3 == 0 and drift_service is not None:
             print(f"🔍 Triggering drift check at count={count}")  # ← ADD THIS
             background_tasks.add_task(check_drift_background)
 

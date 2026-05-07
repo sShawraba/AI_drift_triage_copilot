@@ -1,4 +1,4 @@
-"""LangGraph supervisor with human‑in‑the‑loop (Phase 5: Groq LLM)."""
+"""LangGraph supervisor with human‑in‑the‑loop (Groq LLM + model service linkage)."""
 import json
 import hashlib
 from typing import TypedDict, Optional
@@ -77,6 +77,7 @@ def action_node(state: AgentState) -> AgentState:
             investigation_id=state["investigation_id"],
             model_version=state["drift_event"]["model_version"],
             idempotency_key=idem_key,
+            config={"event_id": state["drift_event"].get("event_id", "")},
         )
         state["final_decision"] = (
             f"Action {action} dispatched to queue "
@@ -128,6 +129,7 @@ def action_node(state: AgentState) -> AgentState:
         investigation_id=state["investigation_id"],
         model_version=state["drift_event"]["model_version"],
         idempotency_key=idem_key,
+        config={"event_id": state["drift_event"].get("event_id", "")},
     )
     state["final_decision"] = (
         f"Action {action} dispatched to queue "

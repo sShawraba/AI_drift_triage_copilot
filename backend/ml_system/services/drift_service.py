@@ -164,7 +164,7 @@ class DriftService:
             try:
                 response = await client.post(
                     self.agent_url,
-                    json=event.model_dump()
+                    json=event.model_dump(mode="json")   # ← fixed
                 )
                 response.raise_for_status()
                 print(f"✅ Webhook sent to {self.agent_url}")
@@ -201,6 +201,8 @@ class DriftService:
         print(f"Severity: {severity} (last: {self.last_severity})")
         
         # Only alert if severity changed AND not low (or changed from low to medium/high)
+        print(f"DEBUG: severity={severity}, last_severity={self.last_severity}, should_alert condition: severity != last_severity = {severity != self.last_severity}, severity != low = {severity != 'low'}")
+        
         should_alert = (
             severity != self.last_severity and 
             severity != "low"
