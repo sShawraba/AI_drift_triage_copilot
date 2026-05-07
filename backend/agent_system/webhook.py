@@ -155,7 +155,24 @@ async def get_checkpoint(investigation_id: str, request: Request):
 
 
 
-
+@router.get("/investigations/{investigation_id}")
+async def get_single_investigation(
+    investigation_id: str,
+    db: Session = Depends(get_db),
+):
+    """Return one investigation by ID."""
+    inv = get_investigation(db, investigation_id)
+    if not inv:
+        raise HTTPException(status_code=404, detail="Not Found")
+    return {
+        "id": inv.id,
+        "model_version": inv.model_version,
+        "status": inv.status.value,
+        "triage_result": inv.triage_result,
+        "proposed_action": inv.proposed_action,
+        "final_decision": inv.final_decision,
+        "created_at": inv.created_at.isoformat(),
+    }
 
 
 
@@ -191,3 +208,6 @@ async def queue_stats():
         "dead_letter_depth": r.llen("agent:dead_letter_queue"),
         "processed_count": r.scard("agent:processed_keys"),
     }
+    
+    
+    
