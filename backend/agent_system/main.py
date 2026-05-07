@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from backend.agent_system.state.checkpoints import create_checkpointer, setup_checkpointer
 from backend.agent_system.graph import create_state_graph
-from backend.agent_system.webhook import router as webhook_router
+from backend.agent_system.router.webhook import router as webhook_router
 from backend.agent_system.state.models import Base
 from backend.agent_system.state.session import engine
 from dotenv import load_dotenv
