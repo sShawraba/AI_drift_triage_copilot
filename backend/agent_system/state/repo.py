@@ -56,3 +56,14 @@ def list_open_investigations(db: Session) -> List[Investigation]:
 
 def list_pending_approvals(db: Session) -> List[Investigation]:
     return db.query(Investigation).filter(Investigation.status == InvestigationStatus.PENDING_APPROVAL).all()
+
+def list_investigations(db: Session, status: str | None = None) -> List[Investigation]:
+    """Return investigations, optionally filtered by status."""
+    q = db.query(Investigation)
+    if status:
+        try:
+            st = InvestigationStatus(status)
+            q = q.filter(Investigation.status == st)
+        except ValueError:
+            pass  # ignore invalid status
+    return q.order_by(Investigation.created_at.desc()).all()

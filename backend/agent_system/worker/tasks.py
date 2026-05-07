@@ -5,10 +5,12 @@ In a real system these would call the model service API.
 import time
 
 def retrain(investigation_id: str, model_version: str, **kwargs):
+    raise Exception("Simulated DLQ failure")
     """Simulate a retrain job."""
     print(f"⏳ Retraining model v{model_version} (investigation {investigation_id})...")
     time.sleep(2)   # simulate work
     print(f"✅ Retrain complete for model v{model_version}")
+    
 
 def rollback(investigation_id: str, model_version: str, **kwargs):
     """Simulate a rollback job."""
