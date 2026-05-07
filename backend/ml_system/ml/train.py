@@ -11,8 +11,9 @@ import mlflow
 import mlflow.sklearn
 import joblib
 
+mlflow.set_tracking_uri('http://localhost:5000')
 
-df = pd.read_csv("backend/ml_system/ml/data/bank-additional-full.csv", sep=";")
+df = pd.read_csv("data/bank-additional-full.csv", sep=";")
 
 '''clean data'''
 # 1. Drop duration (data leakage)
@@ -91,7 +92,6 @@ pipeline = Pipeline(steps=[("preprocessor", preprocessor), ("model", model)])
 # #ml flow logging
 # mlflow.set_experiment("bank-marketing-classifier")
 
-mlflow.set_tracking_uri('http://localhost:5000')
 
 with mlflow.start_run():
 
@@ -135,3 +135,22 @@ with mlflow.start_run():
     # 8. save threshold
     joblib.dump(best_threshold, "threshold.pkl")
     mlflow.log_artifact("threshold.pkl")
+
+    
+    # Register the model
+    model_uri = f"runs:/{mlflow.active_run().info.run_id}/model"
+    registered_model = mlflow.register_model(model_uri, "bank_marketing_model")
+    print(f"Model registered: {registered_model.name} version {registered_model.version}")
+
+# Create reference dataframe for drift detection
+X_val_copy = X_val.copy()
+val_probs = pipeline.predict_proba(X_val)[:, 1]
+val_preds = (val_probs >= best_threshold).astype(int)
+ref_df = X_val_copy.copy()
+ref_df["prediction"] = val_preds
+
+# Save to the location drift_service expects
+os.makedirs("data/processed", exist_ok=True)
+ref_df.to_csv("data/processed/reference_with_predictions.csv", index=False)
+
+print("Reference file saved for drift detection")

@@ -1,5 +1,4 @@
-'''schemas only for ml system'''
-
+# backend/ml_system/schemas.py - Keep original clean names
 from pydantic import BaseModel
 
 class PredictionRequest(BaseModel):
@@ -17,8 +16,8 @@ class PredictionRequest(BaseModel):
     pdays: int
     previous: int
     poutcome: str
-    emp_var_rate: float
-    cons_price_idx: float
-    cons_conf_idx: float
+    emp_var_rate: float      # clean name for API
+    cons_price_idx: float    # clean name for API
+    cons_conf_idx: float     # clean name for API
     euribor3m: float
-    nr_employed: float
+    nr_employed: float       # clean name for API

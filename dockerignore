@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+*.egg-info/
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Data (too large, mount as volume instead)
+data/raw/
+*.csv
+*.pkl
+
+# MLflow (mount as volume)
+mlruns/
+mlflow.db
+
+# Prediction DB (mount as volume)
+predictions.db
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Testing
+tests/
+scripts/
+*.pkl
+
+# Documentation
+*.md
+!README.md  # Keep README if needed
+
+# OS
+.DS_Store
+Thumbs.db
