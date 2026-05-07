@@ -1,9 +1,13 @@
+# tests/conftest.py (full)
 """
 Auto‑mock the LLM for all tests so they run without an API key.
-Also provides event loop for async tests.
+Also creates the investigations table required by the stale‑check in action_node.
 """
 import pytest
 from backend.agent_system.utils.mock_llm import call_llm as mock_call
+from backend.agent_system.state.models import Base
+from backend.agent_system.state.session import engine
+
 
 @pytest.fixture(autouse=True)
 def mock_llm_for_tests(monkeypatch):
@@ -12,3 +16,10 @@ def mock_llm_for_tests(monkeypatch):
         "backend.agent_system.graph.call_llm",
         mock_call,
     )
+
+
+@pytest.fixture(scope="session", autouse=True)
+def create_tables():
+    """Ensure the investigations table exists before any test runs."""
+    Base.metadata.create_all(bind=engine)
+    yield

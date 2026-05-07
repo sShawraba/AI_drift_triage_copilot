@@ -1,3 +1,4 @@
+# tests/test_agent.py (full – unchanged logic, just included for completeness)
 """Snapshot trajectory regression test (mock LLM, no API key)."""
 import json
 from pathlib import Path
@@ -7,6 +8,7 @@ from backend.agent_system.graph import create_state_graph, AgentState
 from backend.agent_system.state.checkpoints import create_checkpointer, setup_checkpointer
 
 FIXTURE = Path(__file__).parent / "fixtures" / "trajectory_001.json"
+
 
 @pytest.mark.asyncio
 async def test_full_trajectory():
