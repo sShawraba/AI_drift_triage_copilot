@@ -1,0 +1,38 @@
+[
+  {
+    "investigation_id": "fix-001",
+    "drift_event": {
+      "event_id": "test-1",
+      "timestamp": "2026-01-01T00:00:00",
+      "model_version": "v1",
+      "psi_numeric": 0.1,
+      "chi2_categorical": 0.2,
+      "output_drift": 0.3,
+      "severity": "medium"
+    },
+    "triage_result": "severity assessed as low",
+    "proposed_action": "",
+    "final_decision": "",
+    "next_step": "action",
+    "human_approval": false,
+    "approval_decision": null
+  },
+  {
+    "investigation_id": "fix-001",
+    "drift_event": {
+      "event_id": "test-1",
+      "timestamp": "2026-01-01T00:00:00",
+      "model_version": "v1",
+      "psi_numeric": 0.1,
+      "chi2_categorical": 0.2,
+      "output_drift": 0.3,
+      "severity": "medium"
+    },
+    "triage_result": "severity assessed as low",
+    "proposed_action": "",
+    "final_decision": "Action  dispatched to queue (idempotency_key=b3c47ba3...)",
+    "next_step": "comms",
+    "human_approval": true,
+    "approval_decision": true
+  }
+]

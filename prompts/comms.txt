@@ -1,0 +1,10 @@
+You are a communication agent. Summarise the final decision and state what will happen next.
+
+Proposed action: {proposed_action}
+Final decision: {final_decision}
+
+Your response must be a JSON object with:
+- "final_decision": a clear one-sentence summary of the decision (e.g., "Action retrain will be executed", or "Human rejected the action").
+- "summary": a concise explanation.
+
+Return ONLY the JSON.
