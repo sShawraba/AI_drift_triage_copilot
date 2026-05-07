@@ -1,0 +1,5 @@
+import os
+
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI")
+MODEL_NAME = os.getenv("MODEL_NAME")
+DRIFT_WINDOW = int(os.getenv("DRIFT_WINDOW", 1000))
