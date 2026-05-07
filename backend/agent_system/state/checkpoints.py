@@ -7,6 +7,7 @@ import base64
 from typing import Any, Optional, AsyncIterator, Sequence
 import asyncpg
 import uuid
+import os
 from langgraph.checkpoint.base import (
     BaseCheckpointSaver,
     Checkpoint,
@@ -15,7 +16,7 @@ from langgraph.checkpoint.base import (
 )
 from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
 
-DATABASE_URL = "postgresql://admin:admin@localhost:5432/mlops"
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://admin:admin@postgres:5432/mlops")
 
 def _serialize(serde, obj: Any) -> str:
     """Serialize an object to a JSONB-safe string using the given serde."""

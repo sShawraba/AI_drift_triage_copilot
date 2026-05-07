@@ -11,7 +11,7 @@ import os
 import redis
 from backend.agent_system.worker.tasks import TASK_MAP
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")
 MAX_RETRIES = 3
 BASE_BACKOFF = 2  # seconds
 
