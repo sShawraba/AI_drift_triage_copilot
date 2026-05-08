@@ -110,6 +110,8 @@ async def handle_action(request: ActionRequest):
             model_version=request.model_version,
             investigation_id=request.investigation_id
         )
+        model_service.force_reload()
+
         mark_processed(request.idempotency_key, result)
 
         return PlatformResponse(
