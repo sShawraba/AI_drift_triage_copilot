@@ -147,7 +147,7 @@ if agent_ok:
         st.info("No pending investigations.")
     else:
         for inv in pending:
-            with st.expander(f"{inv['id']} – {inv.get('proposed_action', '?')} (model {inv.get('model_version','?')})"):
+            with st.expander(f"{inv['id'][:8]}… – {inv.get('proposed_action', '?')} (model {inv.get('model_version','?')})"):
                 st.write("**Triage result:**", inv.get("triage_result", ""))
                 st.write("**Action proposed:**", inv.get("proposed_action", ""))
                 col1, col2 = st.columns(2)
@@ -159,7 +159,7 @@ if agent_ok:
                         )
                         if resp.status_code == 200:
                             st.success("Approved!")
-                            reset_drift()          # ← allow new drift alerts
+                            reset_drift()
                             st.rerun()
                         else:
                             st.error(f"Approval failed: {resp.text}")
@@ -173,7 +173,7 @@ if agent_ok:
                         )
                         if resp.status_code == 200:
                             st.success("Rejected.")
-                            reset_drift()          # ← allow new drift alerts
+                            reset_drift()
                             st.rerun()
                         else:
                             st.error(f"Rejection failed: {resp.text}")
@@ -200,19 +200,92 @@ else:
     st.warning("Agent is down.")
 
 # ------------------------------------------------------------
-# All Investigations
+# All Investigations – automatic refresh, paginated
 # ------------------------------------------------------------
 st.header("📋 All Investigations")
+
+PAGE_SIZE = 10
+
 if agent_ok:
+    # Initialize page in session state if not already
+    if "page" not in st.session_state:
+        st.session_state.page = 0
+
+    # Fetch fresh data every time the script runs
     try:
         all_inv = requests.get(f"{AGENT_URL}/webhook/investigations", timeout=5).json()
-        if all_inv:
-            df = pd.DataFrame(all_inv)
-            df = df[["id", "model_version", "status", "proposed_action", "created_at"]]
-            st.dataframe(df.tail(20), use_container_width=True)
-        else:
-            st.info("No investigations yet.")
     except:
         st.warning("Could not fetch investigation list.")
+        st.stop()
+
+    if not all_inv:
+        st.info("No investigations yet.")
+    else:
+        df = pd.DataFrame(all_inv)
+        df = df[["id", "model_version", "status", "proposed_action", "created_at"]]
+        df["created_at"] = pd.to_datetime(df["created_at"]).dt.strftime("%Y-%m-%d %H:%M:%S")
+
+        # Map status to emoji + text
+        emoji_map = {
+            "pending_approval": "⏳",
+            "completed": "✅",
+            "rejected": "❌",
+            "open": "📂",
+            "approved": "👍",
+            "failed": "💥"
+        }
+        df["status_display"] = df["status"].map(emoji_map).fillna("") + " " + df["status"]
+        df["short_id"] = df["id"].str[:12] + "…"
+
+        # Sort newest first
+        df = df.sort_values(by="created_at", ascending=False)
+
+        total = len(df)
+        total_pages = max(1, (total + PAGE_SIZE - 1) // PAGE_SIZE)
+        page = st.session_state.page
+
+        # Clamp page if out of bounds (e.g., after data cleared)
+        if page >= total_pages:
+            page = total_pages - 1
+            st.session_state.page = page
+
+        start = page * PAGE_SIZE
+        end = start + PAGE_SIZE
+        page_df = df.iloc[start:end]
+
+        # Pagination controls
+        col1, col2, col3, col4, col5 = st.columns([1, 1, 3, 1, 1])
+        with col1:
+            if st.button("⏮️ First", disabled=(page == 0)):
+                st.session_state.page = 0
+                st.rerun()
+        with col2:
+            if st.button("◀️ Prev", disabled=(page == 0)):
+                st.session_state.page -= 1
+                st.rerun()
+        with col4:
+            if st.button("Next ▶️", disabled=(page >= total_pages - 1)):
+                st.session_state.page += 1
+                st.rerun()
+        with col5:
+            if st.button("Last ⏭️", disabled=(page >= total_pages - 1)):
+                st.session_state.page = total_pages - 1
+                st.rerun()
+        with col3:
+            st.write(f"Page {page+1} of {total_pages} ・ {total} investigations total")
+
+        # Display the current page
+        st.dataframe(
+            page_df,
+            column_config={
+                "short_id": st.column_config.TextColumn("ID", width="small"),
+                "model_version": "Model",
+                "status_display": st.column_config.TextColumn("Status"),
+                "proposed_action": "Action",
+                "created_at": "Created"
+            },
+            use_container_width=True,
+            hide_index=True,
+        )
 else:
     st.warning("Agent is down.")
