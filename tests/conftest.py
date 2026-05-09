@@ -20,6 +20,14 @@ def mock_llm_for_tests(monkeypatch):
 
 @pytest.fixture(scope="session", autouse=True)
 def create_tables():
-    """Ensure the investigations table exists before any test runs."""
-    Base.metadata.create_all(bind=engine)
+    """Ensure the investigations table exists before any test runs.
+
+    If the database isn't reachable (e.g. running tests on the host without
+    docker compose up), skip silently — pure unit tests don't need it, and
+    tests that *do* hit the DB will fail at their own call site.
+    """
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception:
+        pass
     yield
