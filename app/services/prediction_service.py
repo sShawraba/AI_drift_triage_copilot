@@ -35,20 +35,6 @@ class PredictionService:
         self.audit = audit_service
         self.session = session
 
-    async def save_prediction(self, prediction_data: PredictionCreate) -> PredictionRead:
-        """Save a prediction without touching the parent batch's status.
-
-        Kept as a separate method so future code paths (re-prediction, manual
-        annotation) can persist a prediction without implying the batch is
-        completed.
-        """
-        prediction = await self.repo.create(prediction_data)
-        await self.session.commit()
-
-        await self.cache.invalidate_batch(prediction_data.batch_id)
-        await self.cache.invalidate_recent_predictions()
-        logger.info("prediction.saved", prediction_id=str(prediction.id), batch_id=str(prediction_data.batch_id))
-        return PredictionRead.model_validate(prediction)
 
     async def save_prediction_and_complete_batch(
         self, prediction_data: PredictionCreate

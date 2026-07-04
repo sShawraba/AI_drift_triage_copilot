@@ -3,7 +3,7 @@
 # lean. Compose picks the right one via `build.target:` per service.
 
 FROM python:3.11-slim AS builder
-RUN pip install --no-cache-dir uv==0.11.3
+RUN pip install --no-cache-dir uv==0.11.6
 WORKDIR /app
 COPY pyproject.toml uv.lock ./
 
